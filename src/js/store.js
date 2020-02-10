@@ -66,6 +66,16 @@ const links = demoList.map(link => {
   return link;
 });
 
+let viewMode = location.search.match(/viewmode=(\d)/i)[1];
+if (viewMode) {
+  viewMode = Number(viewMode);
+}
+
+const inIframe = window !== top;
+if (inIframe) {
+  viewMode = 2;
+}
+
 const state = {
   config,
   boxes: {},
@@ -73,20 +83,18 @@ const state = {
   links,
   iframeStatus: null,
   isSidebarShown: true,
+  isEditorShown: true,
   transforming: false,
-  inIframe: window !== top,
+  inIframe,
   autoRun: true,
   logs: [],
   currentBox: undefined,
+  viewMode: 1, // 1: 完整视图 2: 收起sidebar 3：monitor全屏
   dependencies: {
     js: [],
     css: []
   }
 };
-
-if (state.inIframe) {
-  state.isSidebarShown = false;
-}
 
 const mutations = {
   CLEAR_BOXES(state) {
@@ -155,6 +163,14 @@ const mutations = {
   },
   UPDATE_CURRENT_BOX(state, box) {
     state.currentBox = box;
+  },
+  UPDATE_VIEW_MODE(state, viewMode) {
+    state.viewMode = viewMode;
+    if (viewMode <= 1) {
+      state.isSidebarShown = true;
+    } else {
+      state.isSidebarShown = false;
+    }
   }
 };
 
@@ -197,6 +213,9 @@ const actions = {
   },
   updateCurrentBox({ commit }, pl) {
     commit('UPDATE_CURRENT_BOX', pl);
+  },
+  toggleSidebar({commit}) {
+    commit('TOGGLE_SIDEBAR');
   },
   async setBoxes({ dispatch }, demo) {
     progress.start();
@@ -302,6 +321,9 @@ const actions = {
   },
   addLog({ commit }, pl) {
     commit('ADD_LOG', pl);
+  },
+  updateViewMode({commit}, viewMode) {
+    commit('UPDATE_VIEW_MODE', viewMode);
   }
 };
 
@@ -311,8 +333,18 @@ const store = new Vuex.Store({
   actions
 });
 
+store.dispatch('updateViewMode', viewMode);
+
 bus.$on('setBoxes', demo => {
   store.dispatch('setBoxes', demo);
+});
+
+window.addEventListener('message', ({ data }) => {
+  if (data.event) {
+    bus.$emit(data.event, data.value);
+  } else if (data.action) {
+    store.dispatch(data.action, data.value);
+  }
 });
 
 export default store;

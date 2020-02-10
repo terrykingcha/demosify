@@ -20,6 +20,7 @@
     <monitor class="monitor"></monitor>
     <div
       class="flipButton"
+      :class="{'flipButton--hidden': viewMode === 3}"
       @click="isBackface = !isBackface"
       @touchmove.stop="onFlipBtnDrag"
       :style="{ top: `${flipBtnTop}px` }"
@@ -46,6 +47,7 @@
 import Editor from '@/components/editor.vue';
 import Monitor from '@/components/monitor.vue';
 import DeformableBox from '@/components/deformableBox.vue';
+import { mapState } from 'vuex';
 export default {
   name: 'vessel',
   data() {
@@ -60,6 +62,7 @@ export default {
     DeformableBox
   },
   computed: {
+    ...mapState(['viewMode']),
     isPC() {
       var userAgentInfo = navigator.userAgent;
       var Agents = new Array(
@@ -105,6 +108,10 @@ export default {
   }
   & .flipButton {
     display: none;
+
+    &--hidden {
+      display: none;
+    }
   }
   &--isPc {
     display: flex;
@@ -116,7 +123,7 @@ export default {
     }
   }
 }
-
+ 
 @media (max-width: $c-small-screen) {
   .vessel {
     position: relative;

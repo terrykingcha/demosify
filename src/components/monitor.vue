@@ -1,6 +1,6 @@
 <template>
   <div class="monitor">
-    <div id="monitor-iframe">
+    <div id="monitor-iframe" :class="{'fullscreen': viewMode === 3}">
       <div class="monitor-iframe-holder" ref="iframe"></div>
     </div>
     <console class="monitor-console"></console>
@@ -46,7 +46,7 @@ export default {
   },
   components: { Console },
   computed: {
-    ...mapState(['boxes', 'autoRun', 'dependencies'])
+    ...mapState(['boxes', 'autoRun', 'dependencies', 'viewMode'])
   },
   mounted() {
     this.iframe = createIframe({
@@ -151,6 +151,14 @@ export default {
     height: 100px;
     flex-grow: 1;
     background: $c-bg;
+
+    &.fullscreen {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      left: 0;
+      top: 0;
+    }
   }
 }
 </style>

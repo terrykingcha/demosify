@@ -9,11 +9,17 @@ import * as monaco from 'monaco-editor';
 // 主题
 import loadTheme from './sandboxTheme.js';
 import { mapState } from 'vuex';
+import bus from '@/js/eventbus.js';
+
 export default {
   props: {
     language: {
       require: true,
       type: String
+    },
+    type: {
+      type: String,
+      required: true
     },
     value: {
       type: String,
@@ -96,7 +102,16 @@ export default {
         this.monacoEditor.setValue(this.value);
       }
 
+      this.bindEmitUpdateCodeListener();
+
       this.bindContentChangeListener();
+    },
+    bindEmitUpdateCodeListener() {
+      bus.$on('updateCode', ({ type, code }) => {
+        if (this.type === type) {
+          this.monacoEditor.setValue(code);
+        }
+      });
     },
     bindContentChangeListener() {
       if (!this.monacoEditor) throw new Error('editor is not mounted');

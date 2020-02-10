@@ -18,15 +18,16 @@
     <div
       class="handler"
       :class="{
-        'handler--hidden': !isSidebarShown
+        'handler--hidden': !isSidebarShown,
+        'handler--none': viewMode === 3
       }"
-      @click="TOGGLE_SIDEBAR"
+      @click="toggleSidebar"
     ></div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Sidebar from '@/components/sidebar.vue';
 export default {
   name: 'fakeBody',
@@ -37,11 +38,10 @@ export default {
     window.test = this;
   },
   computed: {
-    ...mapState(['config', 'isSidebarShown'])
+    ...mapState(['config', 'isSidebarShown', 'viewMode'])
   },
   methods: {
-    ...mapActions(['setBoxes']),
-    ...mapMutations(['TOGGLE_SIDEBAR'])
+    ...mapActions(['setBoxes', 'toggleSidebar', 'showSidebar', 'hideSidebar']),
   }
 };
 </script>
@@ -110,6 +110,9 @@ export default {
   cursor: pointer;
   &--hidden {
     left: 0;
+  }
+  &--none {
+    display: none;
   }
   &:hover {
     opacity: 1;
