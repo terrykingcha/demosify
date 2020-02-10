@@ -56,7 +56,6 @@
         :key="type + content.key"
         v-show="currentBox === type"
         class="editor-sandbox--tab"
-        :type="type"
         :value="content.code"
         :language="content.transformer"
         :editorHook="content.editorHook"

@@ -17,10 +17,6 @@ export default {
       require: true,
       type: String
     },
-    type: {
-      type: String,
-      required: true
-    },
     value: {
       type: String,
       default: ''
@@ -102,16 +98,7 @@ export default {
         this.monacoEditor.setValue(this.value);
       }
 
-      this.bindEmitUpdateCodeListener();
-
       this.bindContentChangeListener();
-    },
-    bindEmitUpdateCodeListener() {
-      bus.$on('updateCode', ({ type, code }) => {
-        if (this.type === type) {
-          this.monacoEditor.setValue(code);
-        }
-      });
     },
     bindContentChangeListener() {
       if (!this.monacoEditor) throw new Error('editor is not mounted');
