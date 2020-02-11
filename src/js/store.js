@@ -188,15 +188,12 @@ const actions = {
   },
   updateTab({ commit }, pl) {
     commit('UPDATE_TAB', pl);
-    commit('REFRESH_CURRENT_BOX', pl.type);
   },
   updateKey({ commit }, pl) {
     commit('UPDATE_KEY', pl);
-    commit('REFRESH_CURRENT_BOX', pl.type);
   },
   updateCode({ commit }, pl) {
     commit('UPDATE_CODE', pl);
-    commit('REFRESH_CURRENT_BOX', pl.type);
   },
   updateTransformer({ commit }, pl) {
     commit('UPDATE_TRANSFORMER', pl);
@@ -204,18 +201,15 @@ const actions = {
   },
   updateTransform({ commit }, pl) {
     commit('UPDATE_TRANSFORM', pl);
-    commit('REFRESH_CURRENT_BOX', pl.type);
   },
   updateEditorHook({ commit }, pl) {
     commit('UPDATE_EDITOR_HOOK', pl);
-    commit('REFRESH_CURRENT_BOX', pl.type);
   },
   updateFoldBoxes({ commit }, pl) {
     commit('UPDATE_FOLD_BOXES', pl);
   },
   updateVisible({ commit }, pl) {
     commit('UPDATE_VISIBLE', pl);
-    commit('REFRESH_CURRENT_BOX', pl.type);
   },
   toggleBoxFold({ commit }, pl) {
     commit('TOGGLE_BOX_FOLD', pl);

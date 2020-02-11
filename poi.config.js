@@ -1,4 +1,5 @@
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const fs = require('fs');
 const rootPath = process.cwd();
@@ -82,6 +83,14 @@ module.exports = {
         }
       }
     });
+    config.plugin('copy').use(CopyWebpackPlugin, [
+      [
+        {
+          from: '*.woff2',
+          context: path.join(__dirname, 'static')
+        }
+      ]
+    ]);
     config.module
       .rule('json')
       .test(/\.json$/)
